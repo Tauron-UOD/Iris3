@@ -13,6 +13,8 @@ function ClientVersionIsPost7000	() return ClientVersionIsPost(07000000) end -- 
 function ClientVersionIsPost6017	() return ClientVersionIsPost(06000107) end -- see http://iris2.de/index.php/Clientversion_6.0.1.7_and_later
 function ClientVersionIsPost60142	() return ClientVersionIsPost(06001402) end -- see http://docs.polserver.com/packets/index.php?Packet=0xB9
 function ClientVersionIsPost4000	() return ClientVersionIsPost(04000000) end -- see http://iris2.de/index.php/Clientversion_6.0.1.7_and_later
+function ClientVersionIsPost7090	() return ClientVersionIsPost(07000900) end
+function ClientVersionIsPost70113	() return ClientVersionIsPost(07011300) end
 function ClientVersionIsPost		(version) return GetClientVersionAsNumber() >= version end
 function GetClientVersionAsNumber	() 
 	local res = gClientVersionAsNumberCache[gClientVersion]
