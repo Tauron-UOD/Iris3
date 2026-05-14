@@ -46,7 +46,11 @@ function gPacketHandler.kPacket_ObjectInfo()
 	dynamicdata.zloc		= input:PopInt8()
 	dynamicdata.layer		= input:PopNetUint8() -- new    polguide:0 if multi
 	dynamicdata.hue			= input:PopNetUint16() -- polguide:0 if multi
-	dynamicdata.flag		= input:PopNetUint8() -- polguide:0x20 = Show Properties , 0x80 = Hidden , 0x00 if Multi
+    dynamicdata.flag		= input:PopNetUint8() -- polguide:0x20 = Show Properties , 0x80 = Hidden , 0x00 if Multi
+	-- 7.0.113.56+: 2 byte extra
+	if (ClientVersionIsPost70113()) then
+		dynamicdata.unknown2 = input:PopNetUint16()
+	end
 	dynamicdata.iContainerSerial = 0
 	dynamicdata.artid_addstack = 0
 	
