@@ -17,7 +17,7 @@ gConfig:DeclareEnum("enum", "normal", "haeh2?", "nene....2", "cube", {"cube","ci
 
 gConfig:DeclareFloat("kGuiToolTipWait", "gui", "tooltip timeout", "TODO", 100)
 
-gConfig:DeclareString("gClientVersion", "protocol", "client version", 'Client Identification String (try other version for example "4.0.11c5")', "6.0.9.2") -- old was 6.0.1.6, but the protocol changes in 6017 are supported now =)
+gConfig:DeclareString("gClientVersion", "protocol", "client version", 'Client Identification String (try other version for example "4.0.11c5")', "7.0.113.56") -- old was 6.0.1.6, but the protocol changes in 6017 are supported now =)
 
 -- Camera Rotation - Input stuff use: "mouse1", "mouse2" or "mouse3"
 gInput_CamMouseButton = GetNamedKey("mouse3")
