@@ -312,7 +312,7 @@ function SendLoginConfirmSpecials ()
 	if (gLoginConfirmPlayerSerial) then
 		Send_ClientQuery(gRequest_Skills,gLoginConfirmPlayerSerial,true)
 	end
-	Send_ClientVersion(gClientVersion or "4.0.11c5 3D") 
+    Send_ClientVersion(gClientVersion or "7.0.113.56") 
 	Send_Screensize()
 	Send_ClientLanguage(gLanguage or "ENU") 
 	Send_UnknownCommand() 
@@ -404,7 +404,7 @@ function gPacketHandler.kPacket_Client_Version() -- 0xBD
 	GuiAddChatLine("NET: Request Clientversion " .. value)
 
 	--Send Client ident string
-	Send_ClientVersion(gClientVersion or "4.0.11c5 3D")
+	Send_ClientVersion(gClientVersion or "7.0.113.56")
 end
 
 -- Send Packets -----------------------------------------------------------
