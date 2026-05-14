@@ -243,8 +243,10 @@ gPacketType.kPacket_MobStateAnimKR									= { id=0xE2, size=10 } -- http://docs
 gPacketType.kPacket_ExtBundledPacket								= { id=0xF0, size=0 } -- party positions, used by razor positioning system
 gPacketType.kPacket_ObjectInfo										= { id=0xF3, size=24 }
 
-gPacketSizeOverride6017 = {[0x25]=21,[0x08]=15,} -- 0x3C is changed as well, but was dynamic anyway
-gPacketSizeOverride60142 = {[0xB9]=5,} -- see http://docs.polserver.com/packets/index.php?Packet=0xB9
+gPacketSizeOverride6017   = {[0x25]=21,[0x08]=15,} -- 0x3C is changed as well, but was dynamic anyway
+gPacketSizeOverride60142  = {[0xB9]=5,} -- see http://docs.polserver.com/packets/index.php?Packet=0xB9
+-- 7.0.113.56+: 0x24 Open Container gains 1 extra byte; 0xF3 ObjectInfo gains 2 extra bytes
+gPacketSizeOverride70113  = {[0x24]=8,[0xF3]=26,}
 
 
 
@@ -265,6 +267,10 @@ function InitPackets ()
 	if (ClientVersionIsPost60142()) then 
 		print("initializing packets for 6.0.14.2 or later")
 		for id,newsize in pairs(gPacketSizeOverride60142) do gPacketSizeByID[id] = newsize end
+	end
+	if (ClientVersionIsPost70113()) then
+		print("initializing packets for 7.0.113.56 or later")
+		for id,newsize in pairs(gPacketSizeOverride70113) do gPacketSizeByID[id] = newsize end
 	end
 	if (gUse16BitZ) then 
 		print("InitPackets : gUse16BitZ active")
