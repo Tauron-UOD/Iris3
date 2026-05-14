@@ -44,12 +44,20 @@ function NetConnectWithKey  (host,port,key)
 	if (not gMainConnection) then return false end
 	NetTrafficStep()
 	local out = GetSendFIFO()
-	if (ClientVersionIsPost7000()) then -- TODO : not sure since which version exactly
-		out:PushNetUint8(0xef)
-		out:SendPacket(true)
-		-- demise 25.04.2010 (used:razor+7.0.6.5=cur min:7.0.2.1)
-		for k,v in ipairs({0x0a,0x00,0x02,0x0f,0x00,0x00,0x00,0x07,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x06,0x00,0x00,0x00,0x05}) do 
-			out:PushNetUint8(v)
+if (ClientVersionIsPost7000()) then
+		-- 0xEF seed packet: 1 (id) + 4 (seed) + 4 (major) + 4 (minor) + 4 (revision) + 4 (patch) = 21 bytes
+		out:PushNetUint8(0xef)          -- packet id
+		out:PushNetUint32(0xFEFEFEFE)  -- seed (client IP placeholder)
+		if (ClientVersionIsPost70113()) then
+			out:PushNetUint32(7)           -- major
+			out:PushNetUint32(0)           -- minor
+			out:PushNetUint32(113)         -- revision
+			out:PushNetUint32(56)          -- patch
+		else
+			out:PushNetUint32(7)           -- major
+			out:PushNetUint32(0)           -- minor
+			out:PushNetUint32(6)           -- revision
+			out:PushNetUint32(5)           -- patch
 		end
 		out:SendPacket(true)
 	else
