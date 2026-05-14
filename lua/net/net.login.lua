@@ -201,7 +201,21 @@ function gPacketHandler.kPacket_Character_List() -- 0xA9
 	charlist.citynumber = input:PopNetUint8()
 	iBytesLeft = iBytesLeft - 1
 	printdebug("login",sprintf("NET: Citynumber: %d\n",charlist.citynumber))
-	local iBytesPerCity = 1+30+1+30+1
+local iBytesPerCity_old = 1+30+1+30+1
+	local iBytesPerCity_new = 1+32+32+4
+	local iBytesPerCity = iBytesPerCity_old
+	if (ClientVersionIsPost7090()) then
+		iBytesPerCity = iBytesPerCity_new
+	else
+		local iBytesForCities = iBytesLeft - 4
+		if (charlist.citynumber > 0) then
+			local fitsNew = (math.mod(iBytesForCities, iBytesPerCity_new) == 0)
+			if (fitsNew and (iBytesForCities / iBytesPerCity_new) == charlist.citynumber) then
+				iBytesPerCity = iBytesPerCity_new
+				print("kPacket_Character_List: auto-detected 7.0.9.0+ city format")
+			end
+		end
+	end
 	local iTransmittedCityNumber = math.floor((iBytesLeft - 4) / iBytesPerCity)
 	if (iTransmittedCityNumber ~= charlist.citynumber) then
 		print("kPacket_Character_List WARNING : city number mismatch : num,real = ",charlist.citynumber,iTransmittedCityNumber)
@@ -211,12 +225,18 @@ function gPacketHandler.kPacket_Character_List() -- 0xA9
 		iBytesLeft = iBytesLeft - iBytesPerCity
 		gCities[i] = {}
 		gCities[i].i=i
-		gCities[i].index=input:PopNetUint8()
-		gCities[i].name=input:PopFilledString(30)
-		gCities[i].terminator1=input:PopNetUint8()
-		gCities[i].tavern=input:PopFilledString(30)
-		gCities[i].terminator2=input:PopNetUint8()
-
+		if (iBytesPerCity == iBytesPerCity_new) then
+			gCities[i].index  = input:PopNetUint8()
+			gCities[i].name   = input:PopFilledString(32)
+			gCities[i].tavern = input:PopFilledString(32)
+			gCities[i].cliloc = input:PopNetUint32()
+		else
+			gCities[i].index      = input:PopNetUint8()
+			gCities[i].name       = input:PopFilledString(30)
+			gCities[i].terminator1= input:PopNetUint8()
+			gCities[i].tavern     = input:PopFilledString(30)
+			gCities[i].terminator2= input:PopNetUint8()
+		end
 		printdebug("login",sprintf("NET: Index: %i City: %s Tavern: %s\n",gCities[i].index,gCities[i].name,gCities[i].tavern))
 	end
 	charlist.cities = gCities
