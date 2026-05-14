@@ -7,7 +7,11 @@ function gPacketHandler.kPacket_Open_Container() -- 0x24
 	local id = input:PopNetUint8()
 	local containerdata = {}
 	containerdata.serial = input:PopNetUint32()
-	containerdata.gumpid = input:PopNetUint16()
+    containerdata.gumpid = input:PopNetUint16()
+	-- 7.0.113.56+: byte extra (0x7C = grid container, 0x00 = normale)
+	if (ClientVersionIsPost70113()) then
+		containerdata.opentype = input:PopNetUint8()
+	end
 	HandleOpenContainer(containerdata)
 end
 
