@@ -1,7 +1,8 @@
 -- packet handlers for game startup
 -- see also lib.packet.lua and lib.protocol.lua
 
-gLoginFlags = 0x0000003F
+-- Login flags: 0x01=T2A 0x02=Ren 0x04=TD 0x08=LBR 0x10=AOS 0x20=SE 0x40=ML 0x80=8th 0x100=9th 0x200=10th 0x400=SA 0x800=HS
+gLoginFlags = 0x00007FF  -- T2A through Stygian Abyss + High Seas
 gTooltipSupport = false
 gPWReplace = "??????" -- prevent username/password appearing in debug dump
 
